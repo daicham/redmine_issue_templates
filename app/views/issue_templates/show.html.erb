@@ -1,0 +1,21 @@
+<div class="contextual">
+  <%= link_to_if_authorized l(:button_edit), {:action => 'update', :id => @issue_template.id}, :class => 'icon icon-edit' %>
+  <%= link_to_if_authorized l(:button_delete), {:action => 'destroy', :id => @issue_template.id}, :confirm => l(:text_are_you_sure), :method => :post, :class => 'icon icon-del' %>
+
+</div>
+
+<% if @notice -%>
+  <div class="flash notice"><%= @notice -%></div>
+<% end -%>
+
+<h2><%=h @issue_template.title %></h2>
+
+<p>
+  <%=h @issue_template.note%>
+</p>
+
+<hr/>
+
+<div class="wiki">
+  <%= textilizable @issue_template, :description %>
+</div>

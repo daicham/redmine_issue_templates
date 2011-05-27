@@ -1,0 +1,42 @@
+<%#
+# テンプレートの一覧表示を行う。
+%>
+
+<div class="contextual">
+  <%  #
+  # テンプレートを作成する権限がある人には新規作成リンクを表示する。
+  -%>
+  <%= link_to_if_authorized l(:label_new), {:action => 'create', :id => @project}, :class => 'icon icon-add' %>
+</div>
+
+<% if @notice -%>
+<% #
+# "作成に成功"などのメッセージを出力するための記述。@noticeに格納されているメッセージを表示する。
+-%>
+  <div class="flash notice"><%= @notice -%></div>
+<% end -%>
+
+<% #
+# これより下がテンプレート一覧を表示するテーブル
+-%>
+<table class="list">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th><%=h l(:field_title)%></th>
+      <th><%=h l(:field_updated_on)%></th>
+      <th><%=h l(:issue_template_note)%></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @issue_templates.each do |template| %>
+      <tr class="<%= cycle('odd', 'even')%>">
+        <td><%= template.id %></td>
+        <td><%= link_to h(template.title), :action => 'show', :id => template.id %></td>
+        <td><%= format_time(template.updated_at)%> </td>
+        <td><%=h template.note%></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

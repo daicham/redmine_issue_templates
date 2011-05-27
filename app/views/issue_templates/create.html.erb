@@ -1,0 +1,16 @@
+<h2><%=h l(:button_add)%></h2>
+<div class="box">
+  <%= error_messages_for 'issue_template' %>
+  <% labelled_tabular_form_for :issue_template, @issue_template, :action => 'update' do |f|%>
+    <p>
+      <%= f.text_field :title, :size => 50, :required => true %>
+    </p>
+    <p>
+      <%= f.text_field :note, :size => 80, :label => l(:issue_template_note) %>
+    </p>
+    <p><%= f.text_area :description, :rows => 8, :cols=>60, :accesskey => accesskey(:edit), :class => 'wiki-edit' ,:required => true %></p>
+    <%= submit_tag l(:button_apply) %>
+  <% end %>
+  <%= wikitoolbar_for 'issue_template_description' %>
+</div>
+

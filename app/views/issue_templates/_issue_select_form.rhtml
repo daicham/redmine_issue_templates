@@ -1,0 +1,22 @@
+<%#
+# チケット編集画面に挿入するテンプレート選択のオプションメニュー
+%>
+
+<% #プロジェクトでチケットテンプレートが有効になっている時のみ %>
+<% if project.module_enabled? :issue_templates %>
+
+  <%
+  # チケット一覧を取得
+  issue_templates = IssueTemplate.find(:all, :conditions => ['project_id = ?', @project.id])
+%>
+  <p>
+    <label><%=h l(:issue_template)%></label>
+    <% #オプションメニュー %>
+    <%= select_tag :issue_template, options_for_select([''] + issue_templates.collect {|t| [t.title, t.id]}), :include_blank => true %>
+  </p>
+  <% #オプションメニューの値が変更されたらAjaxでテキストエリアを書き換える %>
+  <%= observe_field(:issue_template, {:with => :issue_template,
+      :url => {:controller => 'issue_templates', :action => 'load', :id => @project},
+      :update => 'issue_description', :condition => '$("issue_template").value != ""'}) %>
+
+<% end %>
