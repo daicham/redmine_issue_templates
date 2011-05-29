@@ -5,9 +5,16 @@
 <% #プロジェクトでチケットテンプレートが有効になっている時のみ %>
 <% if project.module_enabled? :issue_templates %>
 
-  <%
-  # チケット一覧を取得
-  issue_templates = IssueTemplate.find(:all, :conditions => ['project_id = ?', @project.id])
+<%
+  #祖先プロジェクト方向に遡ってテンプレート一覧を取得する(サブプロジェクトのテンプレートを優先する)
+  projects = @project.self_and_ancestors.reverse
+  issue_templates = []
+  projects.each {|p|
+    issue_templates += IssueTemplate.find(:all, :conditions => ['project_id = ?', p.id]).reject {|i|
+      #取得済みのテンプレートは取り除く(サブプロジェクトのテンプレートを優先する)
+      issue_templates.detect {|t|t.title == i.title}
+    }
+  }
 %>
   <p>
     <label><%=h l(:issue_template)%></label>
