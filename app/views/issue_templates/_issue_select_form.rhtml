@@ -24,6 +24,6 @@
   <% #オプションメニューの値が変更されたらAjaxでテキストエリアを書き換える %>
   <%= observe_field(:issue_template, {:with => :issue_template,
       :url => {:controller => 'issue_templates', :action => 'load', :id => @project},
-      :update => 'issue_description', :condition => '$("issue_template").value != ""'}) %>
+      :complete => '$("issue_description").value = request.responseText', :condition => '$("issue_template").value != ""'}) %>
 
 <% end %>
